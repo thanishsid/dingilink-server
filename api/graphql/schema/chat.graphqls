@@ -1,0 +1,65 @@
+interface ChatPreview
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.ChatPreview"
+	) {
+	id: ID!
+	lastMessage: Message
+	unreadMessageCount: Int!
+}
+
+interface Chat
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.Chat"
+	) {
+	id: ID!
+}
+
+type DirectChatPreview implements ChatPreview
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.DirectChatPreview"
+	) {
+	id: ID!
+	user: User
+	lastMessage: Message
+	unreadMessageCount: Int!
+}
+
+type GroupChatPreview implements ChatPreview
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.GroupChatPreview"
+	) {
+	id: ID!
+	group: Group
+	lastMessage: Message
+	unreadMessageCount: Int!
+}
+
+type DirectChat implements Chat
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.DirectChat"
+	) {
+	id: ID!
+	user: User
+}
+
+type GroupChat implements Chat
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.GroupChat"
+	) {
+	id: ID!
+	group: Group
+}
+
+# ---- QUERIES ---->
+
+extend type Queries {
+	"""
+	Get chats
+	"""
+	chats: [ChatPreview!]
+
+	"""
+	Get Chat
+	"""
+	chat(chatId: ID!): Chat
+}

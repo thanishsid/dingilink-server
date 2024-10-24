@@ -1,0 +1,157 @@
+type User
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.User"
+	) {
+	id: ID!
+	username: String!
+	email: String!
+	name: String!
+	bio: String
+	image: String
+	online: Boolean!
+	friendCount: Int!
+}
+
+type TokenPair
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.TokenPair"
+	) {
+	accessToken: String!
+	refreshToken: String!
+}
+
+type LatLng
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/types.LatLng"
+	) {
+	lat: Float!
+	lng: Float!
+}
+
+type PageInfo
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.PageInfo"
+	) {
+	endCursor: String
+	hasNextPage: Boolean!
+	hasPreviousPage: Boolean!
+}
+
+# ---- INPUTS ----->
+
+input LatLngInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/types.LatLng"
+	) {
+	lat: Float!
+	lng: Float!
+}
+
+input RegistrationInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.RegistrationInput"
+	) {
+	name: String!
+	username: String!
+	email: String!
+	image: String
+	bio: String
+	password: String!
+	emailVerificationLink: String!
+}
+
+input EmailVerificationInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.EmailVerificationInput"
+	) {
+	email: String!
+	token: String!
+}
+
+input ResendEmailVerificationInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.ResendEmailVerificationInput"
+	) {
+	email: String!
+	emailVerificationLink: String!
+}
+
+input LoginInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.LoginInput"
+	) {
+	email: String!
+	password: String!
+}
+
+input RefreshTokensInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.RefreshTokensInput"
+	) {
+	refreshToken: String!
+}
+
+input UpdateCurrentUserInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.UpdateCurrentUserInput"
+	) {
+	name: String!
+	username: String!
+	bio: String
+	image: String
+	existingPassword: String
+	newPassword: String
+}
+
+# ----- MUTATIONS ----->
+
+extend type Mutations {
+	"""
+	Register a new account.
+	"""
+	register(input: RegistrationInput!): Boolean!
+
+	"""
+	Verify email.
+	"""
+	verifyEmail(input: EmailVerificationInput!): TokenPair
+
+	"""
+	Resend email verification.
+	"""
+	resendEmailVerification(input: ResendEmailVerificationInput!): Boolean!
+
+	"""
+	Login using email and password.
+	"""
+	login(input: LoginInput!): TokenPair
+
+	"""
+	Refresh access and refresh tokens.
+	"""
+	refreshTokens(input: RefreshTokensInput!): TokenPair
+
+	"""
+	Logout
+	"""
+	logout: Boolean!
+
+	"""
+	Logout from all devices
+	"""
+	logoutFromAllDevices: Boolean!
+
+	"""
+	Update current user
+	"""
+	updateCurrentUser(input: UpdateCurrentUserInput!): User
+}
+
+# ---- QUERIES ---->
+
+extend type Queries {
+	"""
+	Get currently logged in user
+	"""
+	currentUser: User
+}

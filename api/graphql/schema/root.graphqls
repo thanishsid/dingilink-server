@@ -1,0 +1,11 @@
+schema {
+	query: Queries
+	mutation: Mutations
+	subscription: Subscriptions
+}
+
+type Queries
+
+type Mutations
+
+type Subscriptions

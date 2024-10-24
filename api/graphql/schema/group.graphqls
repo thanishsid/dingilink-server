@@ -1,0 +1,19 @@
+type Group
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.Group"
+	) {
+	id: ID!
+	name: String!
+	description: String
+	image: String
+	members: [GroupMember!]
+}
+
+type GroupMember
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.GroupMember"
+	) {
+	id: ID!
+	user: User
+	isAdmin: Boolean!
+}

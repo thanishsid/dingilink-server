@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<style>
+			@font-face {
+				font-family: 'Roboto';
+				src: local('Roboto'),
+					url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+			}
+
+			body {
+				font-family: 'Roboto', sans-serif;
+				margin: 0;
+				padding: 0;
+			}
+
+			.container {
+				width: 95vw;
+				max-width: 800px;
+				margin: 2rem auto 2rem auto;
+				padding: 30px 0;
+				border: 8px solid rgb(237, 237, 237);
+				border-radius: 15px;
+			}
+
+			.data-container {
+				padding: 3rem 3rem 4rem 3rem;
+				text-align: center;
+			}
+
+			.greeting {
+				font-size: 2.5rem;
+				font-weight: bold;
+				margin-bottom: 2.5rem;
+			}
+
+			.message {
+				font-size: 1rem;
+				color: #231f20;
+				margin-bottom: 3rem;
+			}
+
+			.link {
+				font-size: 1rem;
+				color: #3591ee;
+				text-decoration: none;
+			}
+
+			.expire {
+				margin-top: 3rem;
+				margin-bottom: 20px;
+				font-size: 12px;
+				color: gray;
+			}
+		</style>
+	</head>
+	<body>
+		<table class="container">
+			<tr>
+				<td class="data-container">
+					<h1 class="greeting">Hi, {{.Name}}</h1>
+					<p class="message">{{.Message}}</p>
+
+					<a class="link" href="{{.Link}}">{{.Link}}</a>
+
+					<p class="expire">This code is valid for {{.Validity}}.</p>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>

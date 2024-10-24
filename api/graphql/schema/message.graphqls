@@ -1,0 +1,177 @@
+interface Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.Message"
+	) {
+	id: ID!
+	sender: User
+	group: Group
+	sentAt: Time!
+	chatId: String!
+}
+
+type TextMessage implements Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.TextMessage"
+	) {
+	id: ID!
+	sender: User!
+	group: Group
+	text: String!
+	sentAt: Time!
+	chatId: String!
+}
+
+type ImageMessage implements Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.ImageMessage"
+	) {
+	id: ID!
+	sender: User!
+	group: Group
+	image: String!
+	sentAt: Time!
+	chatId: String!
+}
+
+type AudioMessage implements Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.AudioMessage"
+	) {
+	id: ID!
+	sender: User!
+	group: Group
+	audio: String!
+	sentAt: Time!
+	chatId: String!
+}
+
+type VideoMessage implements Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.VideoMessage"
+	) {
+	id: ID!
+	sender: User!
+	group: Group
+	video: String!
+	sentAt: Time!
+	chatId: String!
+}
+
+type DocumentMessage implements Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.DocumentMessage"
+	) {
+	id: ID!
+	sender: User!
+	group: Group
+	document: String!
+	sentAt: Time!
+	chatId: String!
+}
+
+type LocationMessage implements Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.LocationMessage"
+	) {
+	id: ID!
+	sender: User!
+	group: Group
+	location: LatLng!
+	sentAt: Time!
+	chatId: String!
+}
+
+type DeletedMessage implements Message
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.DeletedMessage"
+	) {
+	id: ID!
+	sender: User!
+	group: Group
+	sentAt: Time!
+	deletedAt: Time!
+	chatId: String!
+}
+
+type MessageConnection
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.MessageConnection"
+	) {
+	edges: [MessageEdge!]!
+	pageInfo: PageInfo!
+}
+
+type MessageEdge
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.MessageEdge"
+	) {
+	node: Message!
+	cursor: String!
+}
+
+enum MessageEventType
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.MessageEventType"
+	) {
+	new
+	edited
+	deleted
+}
+
+type MessageEvent
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/model.MessageEvent"
+	) {
+	type: MessageEventType!
+	message: Message!
+}
+
+# ---- INPUTS ----->
+
+input SendMessageInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.SendMessageInput"
+	) {
+	groupId: ID
+	userId: ID
+	type: String!
+	text: String
+	media: String
+	location: LatLngInput
+	replyForMessageId: ID
+}
+
+input GetMessagesInput
+	@goModel(
+		model: "github.com/thanishsid/dingilink-server/internal/services.GetMessagesInput"
+	) {
+	last: Int
+	before: String
+}
+
+# ---- QUERIES ---->
+
+extend type Queries {
+	"""
+	Get messages
+	"""
+	messages(chatId: ID!, input: GetMessagesInput): MessageConnection
+}
+
+# ---- MUTATIONS ---->
+
+extend type Mutations {
+	"""
+	Send Message
+	"""
+	sendMessage(input: SendMessageInput!): Message
+}
+
+# ---- SUBSCRIPTIONS ---->
+
+extend type Subscriptions {
+	"""
+	Subscribe to message events.
+	"""
+	messageEvents: MessageEvent!
+}
